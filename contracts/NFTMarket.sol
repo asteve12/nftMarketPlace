@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+import "hardhat/console.sol";
+
 contract NFTMarket is ReentrancyGuard{
 using Counters for Counters.Counter;
 Counters.Counter private _itemIds;
@@ -49,6 +51,8 @@ require (price > 0,"Price must be equal to listing price");
  
  uint256 itemId = _itemIds.current();
  idToMarketItems[itemId] =  MarketItems(itemId,nftContract,tokenId,payable(msg.sender),payable(address(0)),price,false);
+  console.log("marketItemcreated",itemId);
+   //console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
 IERC721(nftContract).transferFrom(msg.sender,address(this),tokenId);
 emit MarketItemCreated(itemId,nftContract,tokenId,msg.sender,address(0),price,false);
 
@@ -85,9 +89,10 @@ function fetchMarketItems()public view returns(MarketItems[] memory){
         }
         
 
-        return items;
+      
 
     }
+      return items;
 
 
 }
